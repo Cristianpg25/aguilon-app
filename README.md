@@ -25,3 +25,9 @@ Los datos se guardan solo en el teléfono (localStorage). Desde *Progreso → Tu
 | `sw.js` | Service worker: funcionamiento sin conexión |
 
 Para cambiar el plan, edita `plan.js`. Después sube `VERSION` en `sw.js` para que el teléfono descargue la versión nueva.
+
+## Publicación
+
+La web se sirve con GitHub Pages desde la rama `gh-pages`: https://cristianpg25.github.io/aguilon-app/
+
+Para publicar cambios, súbelos a `main` y también a `gh-pages` (`git push origin main main:gh-pages`).
