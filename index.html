@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Aguilón 22K</title>
+<meta name="description" content="Seguimiento del plan de carrera para el Trail El Aguilón Media 22K.">
+<meta name="theme-color" content="#F1F1ED" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#111214" media="(prefers-color-scheme: dark)">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Aguilón 22K">
+<meta name="format-detection" content="telephone=no">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
+<link rel="preload" href="fonts/big-shoulders-display-latin-800-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header class="top">
+  <div class="brand">
+    <span class="plate"><img src="img/logo.webp" alt="El Aguilón Trail" width="31" height="36"></span>
+    <span class="brand-txt"><b>Aguilón 22K</b><small id="top-week"></small></span>
+  </div>
+  <div class="count" aria-live="polite"><b id="count-num">–</b><small id="count-lbl">días</small></div>
+</header>
+
+<main id="main">
+  <section id="v-hoy" class="view" aria-labelledby="t-hoy" hidden>
+    <h1 id="t-hoy" class="sr">Hoy</h1>
+    <div id="c-hoy"></div>
+  </section>
+
+  <section id="v-plan" class="view" aria-labelledby="t-plan" hidden>
+    <div class="v-head">
+      <h1 id="t-plan">Plan</h1>
+      <button class="btn small" type="button" id="btn-go-week">Ir a esta semana</button>
+    </div>
+    <div id="c-plan"></div>
+  </section>
+
+  <section id="v-historial" class="view" aria-labelledby="t-hist" hidden>
+    <div class="v-head">
+      <h1 id="t-hist">Historial</h1>
+      <button class="btn small primary" type="button" id="btn-extra">+ Salida extra</button>
+    </div>
+    <div id="c-hist"></div>
+  </section>
+
+  <section id="v-progreso" class="view" aria-labelledby="t-prog" hidden>
+    <div class="v-head"><h1 id="t-prog">Progreso</h1></div>
+    <div id="c-prog"></div>
+    <section class="card data" aria-labelledby="t-datos">
+      <h2 id="t-datos">Tus datos</h2>
+      <p class="muted">Todo se guarda solo en este iPhone, sin cuentas ni servidores. Haz una copia de vez en cuando y guárdala en Archivos o iCloud: si borras la app, la necesitarás para recuperarlo todo.</p>
+      <p class="muted" id="last-backup"></p>
+      <div class="row-btns">
+        <button class="btn primary" type="button" id="btn-export">Guardar copia</button>
+        <button class="btn" type="button" id="btn-import">Restaurar copia</button>
+        <button class="btn" type="button" id="btn-csv">Exportar a Excel (CSV)</button>
+      </div>
+      <input type="file" id="file-import" accept=".json,application/json" hidden>
+      <details class="help">
+        <summary>Cómo instalarla en el iPhone</summary>
+        <ol>
+          <li>Abre el enlace en <b>Safari</b>.</li>
+          <li>Pulsa el botón <b>Compartir</b> (el cuadrado con la flecha hacia arriba).</li>
+          <li>Elige <b>Añadir a pantalla de inicio</b> y confirma.</li>
+        </ol>
+        <p>A partir de ahí se abre a pantalla completa desde su icono y funciona sin conexión.</p>
+      </details>
+      <button class="btn danger small" type="button" id="btn-wipe">Borrar todos los registros</button>
+    </section>
+  </section>
+</main>
+
+<nav class="tabbar" aria-label="Secciones">
+  <a href="#hoy" data-tab="hoy">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20 10 9l3.5 5.5L16 11l4 9Z"/><circle cx="16.5" cy="5.5" r="2"/></svg>
+    <span>Hoy</span>
+  </a>
+  <a href="#plan" data-tab="plan">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4M7.5 14h3M13.5 14h3M7.5 17h3"/></svg>
+    <span>Plan</span>
+  </a>
+  <a href="#historial" data-tab="historial">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 6.5h12M8 12h12M8 17.5h12"/><circle cx="4.5" cy="6.5" r="1"/><circle cx="4.5" cy="12" r="1"/><circle cx="4.5" cy="17.5" r="1"/></svg>
+    <span>Historial</span>
+  </a>
+  <a href="#progreso" data-tab="progreso">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h16M7 20v-6M12 20V8M17 20v-9"/></svg>
+    <span>Progreso</span>
+  </a>
+</nav>
+
+<dialog id="sheet" class="sheet" aria-labelledby="sheet-title">
+  <div class="sheet-in">
+    <div class="sheet-grab" aria-hidden="true"></div>
+    <div class="sheet-head">
+      <div>
+        <p class="kicker" id="sheet-kicker"></p>
+        <h2 id="sheet-title"></h2>
+      </div>
+      <button class="icon-btn" type="button" id="sheet-close" aria-label="Cerrar">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
+      </button>
+    </div>
+    <div id="sheet-body"></div>
+  </div>
+</dialog>
+
+<div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+
+<script src="plan.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
